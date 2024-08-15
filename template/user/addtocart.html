@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: #fff;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        .actions a {
+            color: #4CAF50;
+            text-decoration: none;
+            padding: 5px 10px;
+            border: 1px solid #4CAF50;
+            border-radius: 3px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .actions a:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .empty-cart {
+            text-align: center;
+            padding: 20px;
+            font-size: 1.2em;
+        }
+        .quantity-input {
+            width: 60px;
+            text-align: center;
+        }
+        .button-container {
+            text-align: right;
+            margin-top: 20px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .checkout-container {
+            text-align: left;
+            margin-top: 20px;
+            border:1px;
+        }
+       .card-container {
+            width: 20%;
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+           margin-left:-10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="button-container">
+        <a href="{% url 'home' %}" class="btn">Back</a>
+    </div>
+
+    {% if not cart_items %}
+        <p class="empty-cart">Your cart is empty.</p>
+    {% else %}
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Book Name</th>
+                    <th>Book Author</th>
+                    <th>Book Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for item in cart_items %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ item.book.bookname }}</td>
+                    <td>{{ item.book.author }}</td>
+                    <td>${{ item.book.bookprice }}</td>
+                    <td class="actions">
+                        <a href="{% url 'remove_cart' item.id %}">Remove</a>
+                        {% if item.quantity <= item.book.quantity %}
+                            <a href="{% url 'decrease_quantity' item.id %}">-</a>
+                            <input type="number" name="quantity" class="quantity-input" value="{{ item.quantity }}" >
+                            <a href="{% url 'increase_quantity' item.id %}">+</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+    <div class="card-container">
+    <div class="checkout-container">
+        <form action="{% url 'create-checkout-session' %}" method="post">
+            {% csrf_token %}
+            <p>Total products: {{ total_items }}</p>
+            <p>Total price: ${{ total_price }}</p>
+            <button id="checkout-button" type="submit" class="btn">Checkout</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

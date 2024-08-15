@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <table class="table table-bordered table-striped table-hover" style="width: 70%; margin-left:245px; margin-right: auto;align:center;">
+        <thead class="thead-dark">
+            <tr>
+                <th style="width: 20%;">Book Name</th>
+                <th style="width: 15%;">Book Price</th>
+                <th style="width: 8%;text-align:center;">View</th>
+                <th style="width: 10%; text-align:center;">Edit</th>
+                <th style="width: 8%; text-align:center;">Delete</th>
+
+            </tr>
+        </thead>
+        <tbody>
+        {% if books %}
+            {% for i in books %}
+            <tr>
+                <td style="font-size: 0.9rem;">{{ i.bookname }}</td>
+                <td style="font-size: 0.9rem;">{{ i.bookprice }}</td>
+                <td style="text-align: center;">
+                    <a href="{% url 'details' i.id %}" class="btn btn-secondary btn-sm">View</a>
+                </td>
+
+            </tr>
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

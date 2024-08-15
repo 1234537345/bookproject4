@@ -1,0 +1,32 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+
+{% block content %}
+<form action="" method="POST" enctype="multipart/form-data" style="margin-left: auto; margin-right: auto; width: 50%; max-width: 600px;">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="bookname">Book Name:</label>
+        <input type="text" id="bookname" name="bookname" class="form-control form-control-sm" style="background-color:#cfe2ff;" value="{{p.bookname}}">
+    </div>
+    <div class="form-group">
+        <label for="author">Author:</label>
+        <input type="text" id="author" name="author" class="form-control form-control-sm" style="background-color:#cfe2ff;" value="{{p.author}}">
+    </div>
+    <div class="form-group">
+        <label for="quantity">Quantity:</label>
+        <input type="text" id="quantity" name="quantity" class="form-control form-control-sm" style="background-color:#cfe2ff;" value="{{p.quantity}}">
+    </div>
+    <div class="form-group">
+        <label for="bookprice">Price:</label>
+        <input type="text" id="bookprice" name="bookprice" class="form-control form-control-sm" style="background-color:#cfe2ff;" value="{{p.bookprice}}">
+    </div>
+    <div class="form-group">
+        <label for="bookimage">Image:</label>
+        <input type="file" id="bookimage" name="bookimage" class="form-control form-control-sm" value="{{ p.bookimage }}">
+    </div>
+    <br>
+    <div>
+       <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+    </div>
+</form>
+{% endblock %}
